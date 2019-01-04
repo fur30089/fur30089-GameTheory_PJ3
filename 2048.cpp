@@ -12,6 +12,8 @@
 #include <string>
 #include "board.h"
 #include "solver.h"
+#include <time.h>
+
 
 int main(int argc, const char* argv[]) {
 	std::cout << "2048-Demo: ";
@@ -29,11 +31,14 @@ int main(int argc, const char* argv[]) {
 		}
 	}
   //board::reward reward = after.slide(op);
+time_t nStart = time(NULL); 
 	solver solve(solve_args);
 	board state;
 	state_type type;
 	state_hint hint(state);
 	std::cout << std::setprecision(precision);
+time_t nEnd = time(NULL); 
+std::cout<<"time(m) : "<<float(nEnd-nStart)/60<<'\n'; 
 	  while (std::cin >> type >> state >> hint){ 
     //type='before';
     //state={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
@@ -45,3 +50,4 @@ int main(int argc, const char* argv[]) {
 
 	return 0;
 }
+

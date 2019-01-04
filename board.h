@@ -22,6 +22,7 @@ int ValuetoIndex(int i){
   }
 } 
 
+
 /**
  * array-based board for 2048
  *
@@ -163,19 +164,20 @@ public:
     return (*this != prev) ? 0 : -1;
     //return -1;
 	}
+ 
     	
+/*
+float StateValue(board b){
+float score=0;
+for(int i=0;i<=15;i++){
+  if (b(i)>=3){
+  score+=pow(3,log(IndextoValue(b(i))/3)/log(2)+1);
+  }  
+}
+return score; 
+}
+*/ 
 
-
-
-  float StateValue(board b){
-  float score=0;
-  for(int i=0;i<=15;i++){
-    if (b(i)>=3){
-    score+=pow(3,log(IndextoValue(b(i))/3)/log(2)+1);
-    }  
-  }
-  return score; 
-  }
  
 
 
