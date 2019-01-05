@@ -38,7 +38,7 @@ time_t nStart = time(NULL);
 	state_hint hint(state);
 	std::cout << std::setprecision(precision);
 time_t nEnd = time(NULL); 
-std::cout<<"time(m) : "<<float(nEnd-nStart)/60<<'\n'; 
+std::cout<<"time(s) : "<<float(nEnd-nStart)<<'\n'; 
 	  while (std::cin >> type >> state >> hint){ 
     //type='before';
     //state={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};

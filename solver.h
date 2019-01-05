@@ -130,27 +130,9 @@ public:
 
 public:
 	solver(const std::string& args) {
- 
-      //double child[3];
-      //child[1]=1;
-      //std::cout<<child[1]<<'\n'; 
-      //TableA[1][1][1]=29;
-      //std::cout<<TableA[1][1][1];
-
-
-      /*
-      board before;
-      before(2)=2;
-      before(3)=1;
-      board after;      
-      after(1)=2;
-      after(3)=1; 
-      */  
-      
-      
+// TODO: explore the tree and save the result      
       board state; 
-      
-      
+          
       state(0)=0;
       state(1)=0;
       state(2)=0;
@@ -161,27 +143,10 @@ public:
       //std::cout <<"value: "<< value << '\n'; //20   
       //std::cout <<"value: "<< StateValue(state) << '\n'; //20   
       //std::cout <<"value: "<< state(0)<< '\n'; //20   
-               
-  
       
-      //double value=TreeBefore(state,2);
-      double value=TreeAfter(state,0,0);
+      //std::array<double, 3> value=TreeBefore(state,2);
+      std::array<double, 3> value=TreeAfter(state,0,0);
       //std::cout<<"value:"<<state<<" +1= "<<value<<'\n';
-
-      
-
-
-      //std::cout << TableB[5][5] << '\n'; //20        
-      //TreeBefore(before,3);
-      //std::cout<<v;
-      //std::cout<<boardboard;
-    
-
-
-      
-		// TODO: explore the tree and save the result
-
-  
 
 //		std::cout << "feel free to display some messages..." << std::endl;
 	}
@@ -196,21 +161,28 @@ public:
 //		return { min, avg, max };
 		// for an illegal state, simply return {}
     board::cell hint = state_hint(state);
-    value_t min=60;
-    value_t avg=61;
-    value_t max=62;
+    value_t min;
+    value_t avg;
+    value_t max;
         
     if (type.is_before()){
+    if (TableB[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint-1][0]==-1) return -1;
+    min=TableB[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint-1][0];
     avg=TableB[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint-1][1];
+    max=TableB[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint-1][2];
     }
     else{
      int n=0;
      for (int i=0;i<=3;i++){
      if (TableA[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint][i][1]==-1) continue;
-     avg=TableA[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint][i][1];  
+     min=TableA[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint][i][0];
+     avg=TableA[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint][i][1]; 
+     max=TableA[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint][i][2];   
      n=1;   
      }
-     if (n==0)  avg=-1; 
+     if (n==0)  return -1; 
+
+    
     }
 
      
@@ -233,224 +205,209 @@ private:
 
 
  
-double TreeAfter(board after,int hint,int last)
+std::array<double, 3> TreeAfter(board after,int hint,int last)
     {  
        if (hint==0){
           int i=0;
-          double Vavg=0; 
+          std::array<double, 3> Value={1000000,0,-1000000}; 
           for (int pos=0;pos<=5;pos++) {          
             for (int tile=1;tile<=3;tile++) {
                     board before=after; 
                     before(pos) = tile;
-                    Vavg=allhint(before,hint,i,Vavg); 
+                    Value=allhint(before,hint,i,Value); 
                     i++;
             }           
   		    }
-             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last][1]=Vavg;
-             std::cout<<"a "<<after<<" +"<<hint<<"= "<<Vavg<<'\n'; 
-             return TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last][1];     
+             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last]={Value[0],Value[1],Value[2]};
+             //std::cout<<"a "<<after<<" +"<<hint<<"= "<<Value[1]<<'\n'; 
+             return Value;     
        }   
          
        else{
           if (last==0){
              int i=0;
-             double Vavg=0; 
+             std::array<double, 3> Value={1000000,0,-1000000}; 
              for (int pos=3;pos<=5;pos++) {                     
                 board before=after; 
                 if (before(pos) != 0) continue;   
                 before(pos) = hint;
-                Vavg=allhint(before,hint,i,Vavg);
+                Value=allhint(before,hint,i,Value);
                 i++;
                 //std::cout<<before<<'\n';            
                }
-             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last][1]=Vavg;
-             std::cout<<"a "<<after<<" +"<<hint<<"= "<<Vavg<<'\n'; 
-             return TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last][1];               
+             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last]={Value[0],Value[1],Value[2]};
+             //std::cout<<"a "<<after<<" +"<<hint<<"= "<<Value[1]<<'\n'; 
+             return Value;                
             }
           else if (last==1){
              int i=0;
-             double Vavg=0; 
+             std::array<double, 3> Value={1000000,0,-1000000}; 
              for (int pos=0;pos<=3;pos=pos+3) {           
                 board before=after; 
                 if (before(pos) != 0) continue;   
                 before(pos) = hint;
-                Vavg=allhint(before,hint,i,Vavg);
+                Value=allhint(before,hint,i,Value);
                 i++;
                 //std::cout<<before<<'\n';            
                }
-             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last][1]=Vavg;
-             std::cout<<"a "<<after<<" +"<<hint<<"= "<<Vavg<<'\n'; 
-             return TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last][1];  
+             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last]={Value[0],Value[1],Value[2]};
+             //std::cout<<"a "<<after<<" +"<<hint<<"= "<<Value[1]<<'\n'; 
+             return Value;   
             }
           else if (last==2){
              int i=0;
-             double Vavg=0; 
+             std::array<double, 3> Value={1000000,0,-1000000};  
              for (int pos=0;pos<=2;pos++) {         
                 board before=after; 
                 if (before(pos) != 0) continue;   
                 before(pos) = hint;
-                Vavg=allhint(before,hint,i,Vavg);
+                Value=allhint(before,hint,i,Value);
                 i++;
                 //std::cout<<before<<'\n';            
                }
-             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last][1]=Vavg;
-             std::cout<<"a "<<after<<" +"<<hint<<"= "<<Vavg<<'\n'; 
-             return TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last][1];       
+             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last]={Value[0],Value[1],Value[2]};
+             //std::cout<<"a "<<after<<" +"<<hint<<"= "<<Value[1]<<'\n'; 
+             return Value;        
             }
           else if (last==3){
              int i=0;
-             double Vavg=0; 
+             std::array<double, 3> Value={1000000,0,-1000000}; 
              for (int pos=2;pos<=5;pos=pos+3) {          
                 board before=after; 
                 if (before(pos) != 0) continue;   
                 before(pos) = hint;
-                Vavg=allhint(before,hint,i,Vavg);
+                Value=allhint(before,hint,i,Value);
                 i++;
                 //std::cout<<before<<'\n';            
                }
-             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last][1]=Vavg;
-             std::cout<<"a "<<after<<" +"<<hint<<"= "<<Vavg<<'\n'; 
-             return TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last][1];                 
+             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last]={Value[0],Value[1],Value[2]};
+             //std::cout<<"a "<<after<<" +"<<hint<<"= "<<Value[1]<<'\n'; 
+             return Value;                
            }        
       }
 }
        
 
-  double allhint(board before, int hint, int i, double Vavg)
+  std::array<double, 3>  allhint(board before, int hint, int i, std::array<double, 3> Value)
       { int total=0;
        for (int pos=0;pos<=5;pos++) {         
           total+=IndextoValue(before(pos));    
        }
+       
        if (total%6==0){
-          Vavg=Vavg*i*3;
+          Value[1]=Value[1]*i*3;
           for (int hint_=1;hint_<=3;hint_++){
-             //std::cout<<before<<" +"<<hint_<<'\n';
-             if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1]!=-1){
-                 Vavg+=TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1];
-             }
-             else{
-             Vavg+=TreeBefore(before,hint_);
-                     
-          }
+             Value=Fvalue(before,hint_,Value);           
          }
-         return Vavg/((i+1)*3);
+         return {Value[0],Value[1]/((i+1)*3),Value[2]};
        }
        else if (total%6==1){
-          Vavg=Vavg*i*2;
+          Value[1]=Value[1]*i*2;
           for (int hint_=2;hint_<=3;hint_++){
-             //std::cout<<before<<" +"<<hint_<<'\n';
-             if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1]!=-1){
-                 Vavg+=TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1];
-             }
-             else{
-             Vavg+=TreeBefore(before,hint_);
-                     
-          }
+             Value=Fvalue(before,hint_,Value);           
          }
-         return Vavg/((i+1)*2);
+         return {Value[0],Value[1]/((i+1)*2),Value[2]};
        } 
        else if (total%6==2){
-          Vavg=Vavg*i*2;
+          Value[1]=Value[1]*i*2;
           for (int hint_=1;hint_<=3;hint_=hint_+2){
-             //std::cout<<before<<" +"<<hint_<<'\n';
-             if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1]!=-1){
-                 Vavg+=TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1];
-             }
-             else{
-             Vavg+=TreeBefore(before,hint_);
-                    
-          }
-         } 
-         return Vavg/((i+1)*2);
+             Value=Fvalue(before,hint_,Value);           
+         }
+         return {Value[0],Value[1]/((i+1)*2),Value[2]};
        }                    
       else if (total%6==3 & (hint==3 or hint==0) ){
-          Vavg=Vavg*i*2;
+          Value[1]=Value[1]*i*2;
           for (int hint_=1;hint_<=2;hint_++){
-             //std::cout<<before<<" +"<<hint_<<'\n';
-             if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1]!=-1){
-                 Vavg+=TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1];
-             }
-             else{
-             Vavg+=TreeBefore(before,hint_);
-          }           
-          }
-         return Vavg/((i+1)*2);
+             Value=Fvalue(before,hint_,Value);           
+         }
+         return {Value[0],Value[1]/((i+1)*2),Value[2]};
           }
       else if (total%6==3 & hint!=3){
-             Vavg=Vavg*i;
+             Value[1]=Value[1]*i;
              int hint_=3;
-             //std::cout<<before<<" +"<<hint_<<'\n';
-             if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1]!=-1){
-                 Vavg+=TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1];
-             }
-             else{
-             Vavg+=TreeBefore(before,hint_);
-                    
-          }
-          return Vavg/(i+1);
+             Value=Fvalue(before,hint_,Value);           
+        
+         return {Value[0],Value[1]/((i+1)),Value[2]};
          }            
                     
       else if (total%6==4){
-             Vavg=Vavg*i;       
+             Value[1]=Value[1]*i;       
              int hint_=2;
-             //std::cout<<before<<" +"<<hint_<<'\n';
-             if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1]!=-1){
-                 Vavg+=TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1];
-             }
-             else{
-             Vavg+=TreeBefore(before,hint_);       
-          }
-          return Vavg/(i+1);
+             Value=Fvalue(before,hint_,Value);           
+         
+         return {Value[0],Value[1]/((i+1)),Value[2]};
          }              
       else if (total%6==5){
-             Vavg=Vavg*i;
+             Value[1]=Value[1]*i;
              int hint_=1;
-             //std::cout<<before<<" +"<<hint_<<'\n';
-             if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1]!=-1){
-                 Vavg+=TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1];
-             }
-             else{
-             Vavg+=TreeBefore(before,hint_);      
-          }
-          return Vavg/(i+1);
+             Value=Fvalue(before,hint_,Value);           
+         
+         return {Value[0],Value[1]/((i+1)),Value[2]};
          }                                                      
 
   }
 
   
  
+
+std::array<double, 3> Fvalue(board before,int hint_,std::array<double, 3> Value){
+         if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1]!=-1){
+             Value[1]+=TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1];
+         }
+         else{
+         Value[1]+=TreeBefore(before,hint_)[1];                   
+         }
+         if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][0]!=-1){
+             Value[0]=std::min(Value[0],TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][0]); }                      
+         else{
+         Value[0]=std::min(Value[0],TreeBefore(before,hint_)[0]);
+         }             
+         if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][2]!=-1){
+             Value[2]=std::max(Value[2],TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][2]); }                      
+         else{
+         Value[2]=std::max(Value[2],TreeBefore(before,hint_)[2]);
+         }  
+
+return Value;
+} 
  
  
-  double TreeBefore(board before,int hint)
+ 
+std::array<double, 3> TreeBefore(board before,int hint)
     { 
        int N_Beforechildnode=0; 
-       double Vmax=-100000000;
+       std::array<double, 3> Value={0,-1000000000,0};
   		for (int slide=3;slide>=0;slide=slide-1) {
         board after=before;
         board::reward reward = after.slide(slide); 
-        if (reward != -1){
-           /*    
-             if (TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][slide]!=-1){
-                 Vmax=std::max(Vmax,TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][slide]);                 
-             }  
-           */         
-            // else{
-             Vmax=std::max(Vmax,TreeAfter(after,hint,slide));
-             //}
+        if (reward != -1){               
+             if (TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][slide][1]!=-1){
+                 if (TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][slide][1]>Value[1]){
+                    Value[0]=TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][slide][0];
+                    Value[1]=TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][slide][1];
+                    Value[2]=TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][slide][2];
+                 }            
+             }                      
+             else{
+                 if (TreeAfter(after,hint,slide)[1]>Value[1]){
+                    Value=TreeAfter(after,hint,slide);
+                 }  
+             }   
         N_Beforechildnode++; 
   		  }
       }
       
       if (N_Beforechildnode!=0){ // non terminal state
-      TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint-1][1]=Vmax;
+      TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint-1]={Value[0],Value[1],Value[2]};
 
-      std::cout<<"b "<<before<<" +"<<hint<<"= "<<Vmax<<'\n';
-      return Vmax;
+      //std::cout<<"b "<<before<<" +"<<hint<<"= "<<Value<<'\n';
+      //std::cout<<"b "<<before<<" +"<<hint<<'\n';
+      return Value;
       }
       else{ //terminal state
-        TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint-1][1]=StateValue(before);
-        std::cout<<"b "<<before<<" +"<<hint<<"= "<<StateValue(before)<<" terminal"<<'\n';
-        return StateValue(before);    
+        TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint-1]={StateValue(before),StateValue(before),StateValue(before)};
+        //std::cout<<"b "<<before<<" +"<<hint<<"= "<<StateValue(before)<<" terminal"<<'\n';
+        return {StateValue(before),StateValue(before),StateValue(before)};    
       } 
     } 
 
