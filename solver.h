@@ -166,18 +166,18 @@ public:
     value_t max;
         
     if (type.is_before()){
-    if (TableB[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint-1][0]==-1) return -1;
-    min=TableB[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint-1][0];
-    avg=TableB[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint-1][1];
-    max=TableB[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint-1][2];
+    if (TableB[state(0)*pow(10,5)+state(1)*pow(10,4)+state(2)*pow(10,3)+state(3)*pow(10,2)+state(4)*10+state(5)][hint-1][0]==-1) return -1;
+    min=TableB[state(0)*pow(10,5)+state(1)*pow(10,4)+state(2)*pow(10,3)+state(3)*pow(10,2)+state(4)*10+state(5)][hint-1][0];
+    avg=TableB[state(0)*pow(10,5)+state(1)*pow(10,4)+state(2)*pow(10,3)+state(3)*pow(10,2)+state(4)*10+state(5)][hint-1][1];
+    max=TableB[state(0)*pow(10,5)+state(1)*pow(10,4)+state(2)*pow(10,3)+state(3)*pow(10,2)+state(4)*10+state(5)][hint-1][2];
     }
     else{
      int n=0;
      for (int i=0;i<=3;i++){
-     if (TableA[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint][i][1]==-1) continue;
-     min=TableA[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint][i][0];
-     avg=TableA[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint][i][1]; 
-     max=TableA[state(0)*pow(15,5)+state(1)*pow(15,4)+state(2)*pow(15,3)+state(3)*pow(15,2)+state(4)*15+state(5)][hint][i][2];   
+     if (TableA[state(0)*pow(10,5)+state(1)*pow(10,4)+state(2)*pow(10,3)+state(3)*pow(10,2)+state(4)*10+state(5)][hint][i][1]==-1) continue;
+     min=TableA[state(0)*pow(10,5)+state(1)*pow(10,4)+state(2)*pow(10,3)+state(3)*pow(10,2)+state(4)*10+state(5)][hint][i][0];
+     avg=TableA[state(0)*pow(10,5)+state(1)*pow(10,4)+state(2)*pow(10,3)+state(3)*pow(10,2)+state(4)*10+state(5)][hint][i][1]; 
+     max=TableA[state(0)*pow(10,5)+state(1)*pow(10,4)+state(2)*pow(10,3)+state(3)*pow(10,2)+state(4)*10+state(5)][hint][i][2];   
      n=1;   
      }
      if (n==0)  return -1; 
@@ -193,12 +193,12 @@ private:
 	// TODO: place your transposition table here
   
   
-  std::vector<std::vector<std::vector<std::vector<double> > > > TableA = make_4d_vector<double>(pow(15,6), 4, 4,3, -1);
-  //std::vector<std::vector<std::vector<double> > > TableA = make_3d_vector<double>(pow(15,6), 4, 4, -1);
+  std::vector<std::vector<std::vector<std::vector<double> > > > TableA = make_4d_vector<double>(pow(10,6), 4, 4,3, -1);
+  //std::vector<std::vector<std::vector<double> > > TableA = make_3d_vector<double>(pow(10,6), 4, 4, -1);
   //std::cout << TableA[5][5][5] << '\n'; //20
   
-  std::vector<std::vector<std::vector<double> > > TableB = make_3d_vector<double>(pow(15,6), 3, 3, -1);
-  //std::vector<std::vector<double> > TableB = make_2d_vector<double>(pow(15,6), 3, -1);
+  std::vector<std::vector<std::vector<double> > > TableB = make_3d_vector<double>(pow(10,6), 3, 3, -1);
+  //std::vector<std::vector<double> > TableB = make_2d_vector<double>(pow(10,6), 3, -1);
   //TableB[5][5]=78.8; 
   //std::cout << TableB[5][5] << '\n'; //20  
 
@@ -218,7 +218,7 @@ std::array<double, 3> TreeAfter(board after,int hint,int last)
                     i++;
             }           
   		    }
-             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last]={Value[0],Value[1],Value[2]};
+             TableA[after(0)*pow(10,5)+after(1)*pow(10,4)+after(2)*pow(10,3)+after(3)*pow(10,2)+after(4)*10+after(5)][hint][last]={Value[0],Value[1],Value[2]};
              //std::cout<<"a "<<after<<" +"<<hint<<"= "<<Value[1]<<'\n'; 
              return Value;     
        }   
@@ -235,7 +235,7 @@ std::array<double, 3> TreeAfter(board after,int hint,int last)
                 i++;
                 //std::cout<<before<<'\n';            
                }
-             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last]={Value[0],Value[1],Value[2]};
+             TableA[after(0)*pow(10,5)+after(1)*pow(10,4)+after(2)*pow(10,3)+after(3)*pow(10,2)+after(4)*10+after(5)][hint][last]={Value[0],Value[1],Value[2]};
              //std::cout<<"a "<<after<<" +"<<hint<<"= "<<Value[1]<<'\n'; 
              return Value;                
             }
@@ -250,7 +250,7 @@ std::array<double, 3> TreeAfter(board after,int hint,int last)
                 i++;
                 //std::cout<<before<<'\n';            
                }
-             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last]={Value[0],Value[1],Value[2]};
+             TableA[after(0)*pow(10,5)+after(1)*pow(10,4)+after(2)*pow(10,3)+after(3)*pow(10,2)+after(4)*10+after(5)][hint][last]={Value[0],Value[1],Value[2]};
              //std::cout<<"a "<<after<<" +"<<hint<<"= "<<Value[1]<<'\n'; 
              return Value;   
             }
@@ -265,7 +265,7 @@ std::array<double, 3> TreeAfter(board after,int hint,int last)
                 i++;
                 //std::cout<<before<<'\n';            
                }
-             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last]={Value[0],Value[1],Value[2]};
+             TableA[after(0)*pow(10,5)+after(1)*pow(10,4)+after(2)*pow(10,3)+after(3)*pow(10,2)+after(4)*10+after(5)][hint][last]={Value[0],Value[1],Value[2]};
              //std::cout<<"a "<<after<<" +"<<hint<<"= "<<Value[1]<<'\n'; 
              return Value;        
             }
@@ -280,7 +280,7 @@ std::array<double, 3> TreeAfter(board after,int hint,int last)
                 i++;
                 //std::cout<<before<<'\n';            
                }
-             TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][last]={Value[0],Value[1],Value[2]};
+             TableA[after(0)*pow(10,5)+after(1)*pow(10,4)+after(2)*pow(10,3)+after(3)*pow(10,2)+after(4)*10+after(5)][hint][last]={Value[0],Value[1],Value[2]};
              //std::cout<<"a "<<after<<" +"<<hint<<"= "<<Value[1]<<'\n'; 
              return Value;                
            }        
@@ -351,19 +351,19 @@ std::array<double, 3> TreeAfter(board after,int hint,int last)
  
 
 std::array<double, 3> Fvalue(board before,int hint_,std::array<double, 3> Value){
-         if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1]!=-1){
-             Value[1]+=TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][1];
+         if (TableB[before(0)*pow(10,5)+before(1)*pow(10,4)+before(2)*pow(10,3)+before(3)*pow(10,2)+before(4)*10+before(5)][hint_-1][1]!=-1){
+             Value[1]+=TableB[before(0)*pow(10,5)+before(1)*pow(10,4)+before(2)*pow(10,3)+before(3)*pow(10,2)+before(4)*10+before(5)][hint_-1][1];
          }
          else{
          Value[1]+=TreeBefore(before,hint_)[1];                   
          }
-         if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][0]!=-1){
-             Value[0]=std::min(Value[0],TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][0]); }                      
+         if (TableB[before(0)*pow(10,5)+before(1)*pow(10,4)+before(2)*pow(10,3)+before(3)*pow(10,2)+before(4)*10+before(5)][hint_-1][0]!=-1){
+             Value[0]=std::min(Value[0],TableB[before(0)*pow(10,5)+before(1)*pow(10,4)+before(2)*pow(10,3)+before(3)*pow(10,2)+before(4)*10+before(5)][hint_-1][0]); }                      
          else{
          Value[0]=std::min(Value[0],TreeBefore(before,hint_)[0]);
          }             
-         if (TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][2]!=-1){
-             Value[2]=std::max(Value[2],TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint_-1][2]); }                      
+         if (TableB[before(0)*pow(10,5)+before(1)*pow(10,4)+before(2)*pow(10,3)+before(3)*pow(10,2)+before(4)*10+before(5)][hint_-1][2]!=-1){
+             Value[2]=std::max(Value[2],TableB[before(0)*pow(10,5)+before(1)*pow(10,4)+before(2)*pow(10,3)+before(3)*pow(10,2)+before(4)*10+before(5)][hint_-1][2]); }                      
          else{
          Value[2]=std::max(Value[2],TreeBefore(before,hint_)[2]);
          }  
@@ -381,11 +381,11 @@ std::array<double, 3> TreeBefore(board before,int hint)
         board after=before;
         board::reward reward = after.slide(slide); 
         if (reward != -1){               
-             if (TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][slide][1]!=-1){
-                 if (TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][slide][1]>Value[1]){
-                    Value[0]=TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][slide][0];
-                    Value[1]=TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][slide][1];
-                    Value[2]=TableA[after(0)*pow(15,5)+after(1)*pow(15,4)+after(2)*pow(15,3)+after(3)*pow(15,2)+after(4)*15+after(5)][hint][slide][2];
+             if (TableA[after(0)*pow(10,5)+after(1)*pow(10,4)+after(2)*pow(10,3)+after(3)*pow(10,2)+after(4)*10+after(5)][hint][slide][1]!=-1){
+                 if (TableA[after(0)*pow(10,5)+after(1)*pow(10,4)+after(2)*pow(10,3)+after(3)*pow(10,2)+after(4)*10+after(5)][hint][slide][1]>Value[1]){
+                    Value[0]=TableA[after(0)*pow(10,5)+after(1)*pow(10,4)+after(2)*pow(10,3)+after(3)*pow(10,2)+after(4)*10+after(5)][hint][slide][0];
+                    Value[1]=TableA[after(0)*pow(10,5)+after(1)*pow(10,4)+after(2)*pow(10,3)+after(3)*pow(10,2)+after(4)*10+after(5)][hint][slide][1];
+                    Value[2]=TableA[after(0)*pow(10,5)+after(1)*pow(10,4)+after(2)*pow(10,3)+after(3)*pow(10,2)+after(4)*10+after(5)][hint][slide][2];
                  }            
              }                      
              else{
@@ -398,14 +398,15 @@ std::array<double, 3> TreeBefore(board before,int hint)
       }
       
       if (N_Beforechildnode!=0){ // non terminal state
-      TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint-1]={Value[0],Value[1],Value[2]};
+      TableB[before(0)*pow(10,5)+before(1)*pow(10,4)+before(2)*pow(10,3)+before(3)*pow(10,2)+before(4)*10+before(5)][hint-1]={Value[0],Value[1],Value[2]};
 
       //std::cout<<"b "<<before<<" +"<<hint<<"= "<<Value<<'\n';
       //std::cout<<"b "<<before<<" +"<<hint<<'\n';
       return Value;
       }
       else{ //terminal state
-        TableB[before(0)*pow(15,5)+before(1)*pow(15,4)+before(2)*pow(15,3)+before(3)*pow(15,2)+before(4)*15+before(5)][hint-1]={StateValue(before),StateValue(before),StateValue(before)};
+        TableB[before(0)*pow(10,5)+before(1)*pow(10,4)+before(2)*pow(10,3)+before(3)*pow(10,2)+before(4)*10
+        +before(5)][hint-1]={StateValue(before),StateValue(before),StateValue(before)};
         //std::cout<<"b "<<before<<" +"<<hint<<"= "<<StateValue(before)<<" terminal"<<'\n';
         return {StateValue(before),StateValue(before),StateValue(before)};    
       } 
